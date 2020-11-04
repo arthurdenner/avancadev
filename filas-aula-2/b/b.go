@@ -2,14 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/joho/godotenv"
-	uuid "github.com/satori/go.uuid"
-	"github.com/streadway/amqp"
-	"github.com/wesleywillians/go-rabbitmq/queue"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+
+	"github.com/joho/godotenv"
+	uuid "github.com/satori/go.uuid"
+	"github.com/streadway/amqp"
+	"github.com/wesleywillians/go-rabbitmq/queue"
 )
 
 type Result struct {
@@ -62,6 +63,7 @@ func process(msg amqp.Delivery) {
 
 	switch resultCoupon.Status {
 	case InvalidCoupon:
+		msg.Ack(false)
 		log.Println("Order: ", order.ID, ": invalid coupon!")
 
 	case ConnectionError:
@@ -69,6 +71,7 @@ func process(msg amqp.Delivery) {
 		log.Println("Order: ", order.ID, ": could not process!")
 
 	case ValidCoupon:
+		msg.Ack(false)
 		log.Println("Order: ", order.ID, ": Processed")
 	}
 }

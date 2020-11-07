@@ -12,3 +12,17 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+
+  a:
+    image: "arthurdenner/avancadev-microsservico-a"
+    ports:
+      - "9090:9090"
+
+  b:
+    image: "arthurdenner/avancadev-microsservico-b"
+    restart: on-failure
+
+  c:
+    image: "arthurdenner/avancadev-microsservico-c"
+    ports:
+      - "9092:9092"
